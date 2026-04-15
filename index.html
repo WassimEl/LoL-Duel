@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Arène 1v1 League of Legends V0.4</title>
+    <title>LoL Arena - Bracket 1v1 & Team Randomizer V0.5</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
@@ -28,174 +28,167 @@
             text-align: center;
             margin-bottom: 2rem;
         }
-
         .header h1 {
             font-size: 2rem;
-            font-weight: 600;
+            font-weight: 700;
             background: linear-gradient(135deg, #D4AF37, #FFD966);
-            background-clip: text;
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
-            letter-spacing: -0.3px;
         }
-
         .header p {
             color: #8a8f9e;
             margin-top: 0.5rem;
-            font-size: 0.9rem;
         }
 
-        .config-panel {
+        /* Onglets */
+        .tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #232837;
+            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: #9ca3af;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #D4AF37;
+            color: #0a0c12;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+        .tab-btn:hover:not(.active) {
+            background: #1e293b;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Panneaux */
+        .config-panel, .editor-panel {
             background: #11141f;
             border-radius: 28px;
-            padding: 1.2rem 1.5rem;
+            padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             border: 1px solid #232837;
+        }
+        .flex-row {
             display: flex;
             flex-wrap: wrap;
             gap: 1.2rem;
             align-items: flex-end;
             justify-content: space-between;
         }
-
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
             flex: 1;
-            min-width: 140px;
+            min-width: 150px;
         }
-
         .input-group label {
-            font-size: 0.75rem;
-            font-weight: 500;
+            font-size: 0.7rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #9ca3af;
         }
-
-        .input-group input, .input-group textarea {
+        input, textarea, select {
             background: #1e2436;
             border: 1px solid #2d354a;
             border-radius: 20px;
             padding: 0.7rem 1rem;
             color: white;
             font-size: 0.9rem;
-            font-family: monospace;
             transition: all 0.2s;
         }
-
-        .input-group input:focus, .input-group textarea:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #D4AF37;
-            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
         }
-
-        .input-group textarea {
-            resize: vertical;
-            font-family: 'Inter', monospace;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-
         button {
             background: #1e293b;
             border: none;
-            padding: 0.7rem 1.3rem;
+            padding: 0.7rem 1.4rem;
             border-radius: 40px;
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
             color: #e2e8f0;
             border: 1px solid #334155;
         }
-
         button.primary {
             background: #D4AF37;
             color: #0a0c12;
             border: none;
-            box-shadow: 0 2px 8px rgba(212,175,55,0.3);
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
         }
-
         button.primary:hover {
             background: #e5c354;
             transform: scale(0.97);
         }
-
         button:hover {
             background: #2d3a5e;
-            border-color: #5b6e8c;
         }
 
-        .random-toggle {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: #0f121b;
-            padding: 0 1rem;
-            border-radius: 40px;
-            border: 1px solid #2d354a;
-        }
-
-        .random-toggle span {
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
+        /* Bracket */
         .bracket-wrapper {
             overflow-x: auto;
             padding-bottom: 1rem;
         }
-
         .bracket {
             display: flex;
             flex-direction: row;
             gap: 2rem;
-            justify-content: center;
             min-width: 700px;
         }
-
         .round {
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
             min-width: 220px;
         }
-
         .round-title {
             text-align: center;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background: #1a1f2e;
             padding: 0.4rem;
             border-radius: 30px;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.5px;
             color: #cbd5e6;
         }
-
         .match-card {
             background: #11141fcc;
-            backdrop-filter: blur(2px);
             border: 1px solid #2a2f42;
             border-radius: 20px;
             padding: 0.7rem;
-            transition: all 0.1s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
-
         .match-players {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-
         .player-slot {
             background: #0c0f18;
             border-radius: 40px;
@@ -203,22 +196,23 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
-            font-weight: 500;
             border-left: 3px solid #D4AF37;
-            transition: all 0.1s;
         }
-
-        .player-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 130px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .winner {
+            background: #1f2a1f;
+            border-left-color: #2ecc71;
         }
-
+        .clickable {
+            cursor: pointer;
+        }
+        .clickable:hover {
+            background: #1e2a3a;
+        }
+        .vs-badge {
+            text-align: center;
+            font-size: 0.65rem;
+            color: #a0a8c0;
+        }
         .champ-icon {
             width: 22px;
             height: 22px;
@@ -227,567 +221,453 @@
             background: #1e2a3a;
             padding: 2px;
         }
-
         .player-champ {
             font-size: 0.7rem;
             background: #1f2a3e;
             padding: 0.2rem 0.6rem;
             border-radius: 30px;
-            font-family: monospace;
-            font-weight: 400;
-            color: #FFD966;
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
-        .vs-badge {
+        /* Éditeur joueurs équipes */
+        .players-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .player-card {
+            background: #1a1f2e;
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+            border: 1px solid #2d354a;
+        }
+        .player-card input { flex: 2; min-width: 120px; background: #0f121b; }
+        .player-card select { flex: 1; min-width: 110px; background: #0f121b; }
+        .remove-player { background: #7f1a1a; padding: 0.4rem 1rem; border-radius: 30px; }
+
+        /* Cartes équipes */
+        .team-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .team-card {
+            background: linear-gradient(145deg, #11141f, #0d0f17);
+            border-radius: 32px;
+            padding: 1.5rem;
+            min-width: 300px;
+            flex: 1;
+            border: 1px solid #2d354a;
+        }
+        .team-header {
+            font-size: 1.5rem;
+            font-weight: 700;
             text-align: center;
-            font-size: 0.65rem;
-            color: #a0a8c0;
-            margin: 4px 0;
-        }
-
-        .winner {
-            background: #1f2a1f;
-            border-left-color: #2ecc71;
-            box-shadow: 0 0 4px #2ecc7150;
-        }
-
-        .clickable {
-            cursor: pointer;
-        }
-
-        .clickable:hover {
-            background: #1e2a3a;
-            transform: scale(0.98);
-        }
-
-        /* Historique */
-        .history-section {
-            margin-top: 2rem;
-            background: #11141f;
-            border-radius: 28px;
-            padding: 1.2rem;
-            border: 1px solid #232837;
-        }
-
-        .history-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+            padding-bottom: 1rem;
             margin-bottom: 1rem;
+            border-bottom: 2px solid;
+        }
+        .team-blue .team-header { color: #3b82f6; border-bottom-color: #3b82f6; }
+        .team-red .team-header { color: #ef4444; border-bottom-color: #ef4444; }
+        .player-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .player-list li {
+            background: #1e2436;
+            border-radius: 60px;
+            padding: 0.6rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+        }
+        .rank-color {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        .rank-Fer { background: #5a5a6e; color: #ddd; }
+        .rank-Bronze { background: #cd7f32; color: #1e1a0c; }
+        .rank-Argent { background: #b0c4de; color: #1a2a3a; }
+        .rank-Or { background: #ffd700; color: #2c2b1f; }
+        .rank-Platine { background: #37c4a5; color: #0a2a1f; }
+        .rank-Émeraude { background: #2ecc71; color: #0a2a1a; }
+        .rank-Diamant { background: #4a90e2; color: #fff; }
+        .rank-Master { background: #9b59b6; color: white; }
+        .rank-Grandmaster { background: #e67e22; color: white; }
+        .rank-Challenger { background: #e74c3c; color: white; }
+        .role-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            background: #D4AF37;
+            color: #0a0c12;
+        }
+        .warning-badge {
+            background: #e67e22;
+            color: #0a0c12;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
         }
 
         .history-list {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
+            margin-top: 1rem;
         }
-
         .history-card {
             background: #1e2436;
             border-radius: 20px;
             padding: 0.5rem 1rem;
             font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             border-left: 3px solid #D4AF37;
         }
-
-        .clear-history {
-            background: #2d1f2a;
-            border-color: #7f3f5a;
-        }
-
         .footer-info {
             text-align: center;
             margin-top: 2rem;
             font-size: 0.75rem;
             color: #5b687c;
         }
+        @media (max-width: 720px) {
+            body { padding: 1rem; }
+            .team-container { flex-direction: column; }
+            .player-card { flex-direction: column; align-items: stretch; border-radius: 20px; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>⚔️ ARENA 1v1 · League of Legends</h1>
-        <p>Champions aléatoires à CHAQUE tour · Historique des vainqueurs · Icônes officielles</p>
+        <h1>⚔️ LoL Arena - Bracket & Team Randomizer</h1>
+        <p>Tournoi 1v1 | Création d'équipes 5v5</p>
     </div>
 
-    <div class="config-panel">
-        <div class="input-group">
-            <label>🏆 NOMBRE DE JOUEURS</label>
-            <input type="number" id="playerCount" min="2" max="64" value="8" step="1">
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="bracket">🏆 Bracket 1v1</button>
+        <button class="tab-btn" data-tab="team">👥 Créateur d'équipes 5v5</button>
+    </div>
+
+    <!-- ==================== TAB BRACKET 1v1 ==================== -->
+    <div id="bracketTab" class="tab-content active">
+        <div class="config-panel">
+            <div class="input-group">
+                <label>🏆 NOMBRE DE JOUEURS</label>
+                <input type="number" id="playerCount" min="2" max="64" value="8" step="1">
+            </div>
+            <div class="input-group">
+                <label>📝 NOMS (séparés par virgule)</label>
+                <textarea id="playerNamesInput" rows="2" placeholder="Ex: Faker, Caps, Chovy, Zeus"></textarea>
+            </div>
+            <div class="btn-group">
+                <button id="generateBtn" class="primary">✨ Générer le bracket</button>
+            </div>
+            <div class="random-toggle" style="display: flex; align-items: center; gap: 12px;">
+                <span>🎲 Champions aléatoires</span>
+                <label style="display: flex; align-items: center; gap: 8px;">
+                    <span>OFF</span>
+                    <input type="checkbox" id="randomChampCheckbox" style="width: 18px; height: 18px;">
+                    <span>ON</span>
+                </label>
+            </div>
         </div>
-        <div class="input-group">
-            <label>📝 NOMS (séparés par virgule ou retour ligne)</label>
-            <textarea id="playerNamesInput" rows="2" placeholder="Ex: Faker, Caps, Chovy, Zeus, Gumayusi, Beryl, Oner, Keria"></textarea>
+
+        <div class="bracket-wrapper" id="bracketContainer">
+            <div class="bracket" id="bracketTree">⚡ Chargez le bracket...</div>
         </div>
-        <div class="btn-group">
-            <button id="generateBtn" class="primary">✨ Générer le bracket</button>
-        </div>
-        <div class="random-toggle">
-            <span>🎲 Champions aléatoires à chaque tour</span>
-            <label style="display: flex; align-items: center; gap: 8px; cursor:pointer;">
-                <span style="font-size:0.9rem;">OFF</span>
-                <input type="checkbox" id="randomChampCheckbox" style="width: 18px; height: 18px; cursor:pointer;">
-                <span style="font-size:0.9rem;">ON</span>
-            </label>
+
+        <div class="editor-panel" style="margin-top:1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <h3>🏆 Historique des vainqueurs</h3>
+                <button id="clearHistoryBtn" style="background:#2d1f2a;">🗑️ Effacer</button>
+            </div>
+            <div id="historyList" class="history-list"></div>
         </div>
     </div>
 
-    <div class="bracket-wrapper" id="bracketContainer">
-        <div class="bracket" id="bracketTree">
-            <div style="text-align:center; padding: 2rem;">⚡ Entrez les joueurs et cliquez sur "Générer le bracket"</div>
+    <!-- ==================== TAB CREATEUR EQUIPES 5v5 ==================== -->
+    <div id="teamTab" class="tab-content">
+        <div class="editor-panel">
+            <h3 style="margin-bottom:1rem;">📋 Liste des joueurs (max 10 pour 5v5, rangs et rôles optionnels)</h3>
+            <div id="playersListContainer" class="players-grid"></div>
+            <div class="flex-row" style="margin-top:1rem;">
+                <button id="addPlayerBtn" style="background:#2d3a5e;">+ Ajouter un joueur</button>
+                <button id="resetPlayersBtn">🗑️ Réinitialiser</button>
+            </div>
+            <div id="playerWarning" style="color:#e67e22; margin-top:0.5rem; font-size:0.8rem;"></div>
         </div>
-    </div>
 
-    <!-- SECTION HISTORIQUE -->
-    <div class="history-section" id="historySection">
-        <div class="history-title">
-            <span>🏆 HISTORIQUE DES VAINQUEURS</span>
-            <button id="clearHistoryBtn" class="clear-history">🗑️ Effacer l'historique</button>
+        <div class="config-panel" style="justify-content: space-between;">
+            <div class="input-group"><label><input type="checkbox" id="useRanksCheckbox"> ⚖️ Équilibrer par RANG (ELO)</label></div>
+            <div class="input-group"><label><input type="checkbox" id="useRolesCheckbox"> 🎭 Répartir par RÔLE (Top/Jgl/Mid/ADC/Supp)</label></div>
+            <div class="input-group"><button id="randomizeTeamsRankBtn" class="primary">⚡ Créer équipes équilibrées</button></div>
+            <div class="input-group"><button id="shuffleTeamsBtn">🎲 Mélange aléatoire</button></div>
         </div>
-        <div id="historyList" class="history-list">
-            <span style="color:#6b7280;">Aucun vainqueur enregistré pour le moment.</span>
+
+        <div id="teamsContainer" class="team-container">
+            <div class="team-card team-blue"><div class="team-header">🔵 ÉQUIPE BLEUE</div><ul class="player-list" id="blueTeamList"><li>Ajoutez des joueurs (max 10)</li></ul></div>
+            <div class="team-card team-red"><div class="team-header">🔴 ÉQUIPE ROUGE</div><ul class="player-list" id="redTeamList"><li>Ajoutez des joueurs (max 10)</li></ul></div>
+        </div>
+
+        <div class="editor-panel" style="margin-top:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                <h3>📋 Historique des compositions</h3>
+                <button id="clearTeamHistoryBtn">Effacer</button>
+            </div>
+            <div id="teamHistoryList" class="history-list"></div>
         </div>
     </div>
 
     <div class="footer-info">
-        🔹 <strong>Cliquez</strong> sur un joueur pour le déclarer vainqueur → automatiquement sauvegardé dans l'historique<br>
-        🔹 <strong>Double-cliquez</strong> sur un nom pour le modifier<br>
-        🔹 Les icônes des champions sont chargées depuis les serveurs Riot (Data Dragon)<br>
-        🔹 <strong>V0.4</strong>
+        🔹 Bracket : cliquez sur un joueur pour vainqueur (sauvegarde auto) | Double-clic pour modifier le nom<br>
+        🔹 Équipes : maximum 10 joueurs (5v5). Cochez "Équilibrer par rang" et/ou "Répartir par rôle" pour un équilibrage intelligent.<br>
+        🔹<strong>V0.5</strong>
     </div>
 </div>
 
 <script>
-    // ---------- BIBLIOTHÈQUE DE CHAMPIONS (ta liste modifiée) ----------
+    // ==================== PARTIE 1 : BRACKET 1v1 ====================
     const CHAMPIONS_POOL = [
-        "Ahri", "Akali", "Akshan", "Amumu", "Anivia", "Annie", "Aphelios", "Ashe", "Aurelion Sol",
-        "Azir", "Brand", "Caitlyn", "Camille", "Cassiopeia", "Cho'Gath", "Corki", "Heimerdinger",
-        "Darius", "Diana", "Draven", "Dr. Mundo", "Ekko", "Elise", "Evelynn", "Ezreal", "Fiddlesticks",
-        "Fizz", "Galio", "Gangplank", "Garen", "Gnar", "Gragas", "Graves", "Gwen", "Hecarim", "Kled",
-        "Illaoi", "Irelia", "Jarvan IV", "Jax", "Jayce", "Jhin", "Jinx", "Kai'Sa", "Kalista", "Warwick",
-        "Karma", "Karthus", "Kassadin", "Katarina", "Kayle", "Kayn", "Kennen", "Kha'Zix", "Kindred", 
-        "Kog'Maw", "LeBlanc", "Lee Sin", "Lillia", "Lissandra", "Lucian", "Lux", "Malphite", "Ziggs",
-        "Malzahar", "Maokai", "Master Yi", "Miss Fortune", "Mordekaiser", "Morgana", "Nasus", "Neeko", 
-        "Nidalee", "Nocturne", "Nunu", "Olaf", "Orianna", "Ornn", "Pantheon", "Poppy","Singed", "Hwei",
-        "Qiyana", "Quinn", "Rammus", "Rek'Sai", "Renekton", "Rengar", "Riven", "Fiora", "Aurora", "Zeri", 
-        "Rumble", "Ryze", "Samira", "Sejuani", "Seraphine", "Sett", "Shaco", "Shen", "Shyvana", "Volibear",
-        "Sion", "Sivir", "Skarner", "Swain", "Sylas", "Syndra", "Tahm Kench", "Taliyah", "Talon", "Briar",
-        "Teemo", "Tristana", "Trundle", "Tryndamere", "Twisted Fate", "Twitch", "Udyr", "Urgot", "Naafiri",  
-        "Varus", "Vayne", "Veigar", "Vel'Koz", "Vex", "Vi", "Viego", "Viktor", "Vladimir", "K'Sante", "Zoe",
-        "Wukong", "Xayah", "Xerath", "Xin Zhao", "Yasuo", "Yone", "Yorick", "Zac", "Zed", "Nilah", 
-        "Zyra", "Bel'Veth"
+        "Ahri","Akali","Akshan","Amumu","Anivia","Annie","Aphelios","Ashe","Aurelion Sol","Azir","Brand",
+        "Caitlyn","Camille","Cassiopeia","Cho'Gath","Corki","Heimerdinger","Darius","Diana","Draven","Dr. Mundo",
+        "Ekko","Elise","Evelynn","Ezreal","Fiddlesticks","Fizz","Galio","Gangplank","Garen","Gnar","Gragas",
+        "Graves","Gwen","Hecarim","Kled","Illaoi","Irelia","Jarvan IV","Jax","Jayce","Jhin","Jinx","Kai'Sa",
+        "Kalista","Warwick","Karma","Karthus","Kassadin","Katarina","Kayle","Kayn","Kennen","Kha'Zix","Kindred",
+        "Kog'Maw","LeBlanc","Lee Sin","Lillia","Lissandra","Lucian","Lux","Malphite","Ziggs","Malzahar","Maokai",
+        "Master Yi","Miss Fortune","Mordekaiser","Morgana","Nasus","Neeko","Nidalee","Nocturne","Nunu","Olaf",
+        "Orianna","Ornn","Pantheon","Poppy","Singed","Hwei","Qiyana","Quinn","Rammus","Rek'Sai","Renekton","Rengar",
+        "Riven","Fiora","Aurora","Zeri","Rumble","Ryze","Samira","Sejuani","Seraphine","Sett","Shaco","Shen",
+        "Shyvana","Volibear","Sion","Sivir","Skarner","Swain","Sylas","Syndra","Tahm Kench","Taliyah","Talon",
+        "Briar","Teemo","Tristana","Trundle","Tryndamere","Twisted Fate","Twitch","Udyr","Urgot","Naafiri",
+        "Varus","Vayne","Veigar","Vel'Koz","Vex","Vi","Viego","Viktor","Vladimir","K'Sante","Zoe","Wukong","Xayah",
+        "Xerath","Xin Zhao","Yasuo","Yone","Yorick","Zac","Zed","Nilah","Zyra","Bel'Veth"
     ];
-
-    // Nettoyer les doublons éventuels
     const uniqueChamps = [...new Map(CHAMPIONS_POOL.map(c => [c.toLowerCase(), c])).values()];
-    
-    // Mapping des noms pour l'icône (on utilise l'ID Riot)
     function getChampionKey(name) {
-        const specials = {
-            "Aurelion Sol": "AurelionSol",
-            "Cho'Gath": "Chogath",
-            "Dr. Mundo": "DrMundo",
-            "Jarvan IV": "JarvanIV",
-            "Kai'Sa": "Kaisa",
-            "Kha'Zix": "Khazix",
-            "Kog'Maw": "KogMaw",
-            "Lee Sin": "LeeSin",
-            "Master Yi": "MasterYi",
-            "Miss Fortune": "MissFortune",
-            "Tahm Kench": "TahmKench",
-            "Twisted Fate": "TwistedFate",
-            "Xin Zhao": "XinZhao",
-            "Bel'Veth": "Belveth"
-        };
+        const specials = { "Aurelion Sol":"AurelionSol", "Cho'Gath":"Chogath", "Dr. Mundo":"DrMundo", "Jarvan IV":"JarvanIV", "Kai'Sa":"Kaisa", "Kha'Zix":"Khazix", "Kog'Maw":"KogMaw", "Lee Sin":"LeeSin", "Master Yi":"MasterYi", "Miss Fortune":"MissFortune", "Tahm Kench":"TahmKench", "Twisted Fate":"TwistedFate", "Xin Zhao":"XinZhao", "Bel'Veth":"Belveth" };
         if (specials[name]) return specials[name];
         return name.replace(/'/g, '').replace(/\s/g, '');
     }
+    function getChampionIconUrl(champName) { if(!champName || champName==="—") return null; return `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${getChampionKey(champName)}.png`; }
+    function getRandomChampion() { return uniqueChamps[Math.floor(Math.random() * uniqueChamps.length)]; }
 
-    function getChampionIconUrl(champName) {
-        if (!champName || champName === "—") return null;
-        const key = getChampionKey(champName);
-        return `https://ddragon.leagueoflegends.com/cdn/14.1.1/img/champion/${key}.png`;
-    }
+    let bracketHistory = [];
+    function loadBracketHistory() { const s = localStorage.getItem("lol1v1_history_final"); if(s) bracketHistory = JSON.parse(s); renderBracketHistory(); }
+    function saveBracketHistory() { localStorage.setItem("lol1v1_history_final", JSON.stringify(bracketHistory)); renderBracketHistory(); }
+    function addBracketWinner(name, champ) { bracketHistory.unshift({ winner: name, champion: champ, date: new Date().toLocaleString() }); if(bracketHistory.length>20) bracketHistory.pop(); saveBracketHistory(); }
+    function clearBracketHistory() { bracketHistory = []; saveBracketHistory(); }
+    function renderBracketHistory() { const cont = document.getElementById("historyList"); if(!bracketHistory.length) { cont.innerHTML = '<span>Aucun vainqueur</span>'; return; } cont.innerHTML = bracketHistory.map(e => `<div class="history-card">🏆 ${escapeHtml(e.winner)} ${e.champion ? `<div class="player-champ" style="display:inline-flex;"><img src="${getChampionIconUrl(e.champion)}" class="champ-icon" style="width:18px;" onerror="this.style.display='none'">${escapeHtml(e.champion)}</div>` : ''}<span style="font-size:0.7rem;">📅 ${e.date}</span></div>`).join(''); }
 
-    function getRandomChampion() {
-        return uniqueChamps[Math.floor(Math.random() * uniqueChamps.length)];
-    }
+    let currentRounds = [], currentUseRandom = false;
+    function getMatchWinner(match) { if(!match) return null; if(match.winner==='p1') return match.p1?.pending?null:match.p1; if(match.winner==='p2') return match.p2?.pending?null:match.p2; return null; }
+    function updateAllRounds(rounds) { if(!rounds.length) return; for(let r=0; r<rounds.length-1; r++) { for(let i=0; i<rounds[r+1].length; i++) { const nm = rounds[r+1][i]; if(nm.sourceLeft && nm.sourceRight) { const lw = getMatchWinner(nm.sourceLeft), rw = getMatchWinner(nm.sourceRight); const getChamp = () => currentUseRandom?getRandomChampion():"—"; nm.p1 = lw ? {...lw, champion: getChamp(), pending:false} : {name:"???", champion:"—", pending:true}; nm.p2 = rw ? {...rw, champion: getChamp(), pending:false} : {name:"???", champion:"—", pending:true}; if(nm.winner && ((nm.winner==='p1' && nm.p1.pending) || (nm.winner==='p2' && nm.p2.pending))) nm.winner = null; } } } }
+    function setWinner(match, side) { if(!match) return; if((side==='p1' && (match.p1?.pending || match.p1?.name==="BYE")) || (side==='p2' && (match.p2?.pending || match.p2?.name==="BYE"))) return; match.winner = side; updateAllRounds(currentRounds); renderBracket(); const finalRound = currentRounds[currentRounds.length-1]; if(finalRound && finalRound.length===1 && finalRound[0].winner) { const w = finalRound[0].winner==='p1' ? finalRound[0].p1 : finalRound[0].p2; if(w && w.name && w.name!=="???" && w.name!=="BYE") addBracketWinner(w.name, w.champion!=="—"?w.champion:null); } }
+    function createBracket(playerNames, useRandom) { const n=playerNames.length, size = Math.pow(2, Math.ceil(Math.log2(n))); let idx=0, first=[]; for(let i=0; i<size/2; i++) { let p1 = idx<n ? {name:playerNames[idx++], champion:useRandom?getRandomChampion():"—", pending:false} : {name:"BYE", champion:"", pending:true}; let p2 = idx<n ? {name:playerNames[idx++], champion:useRandom?getRandomChampion():"—", pending:false} : {name:"BYE", champion:"", pending:true}; first.push({id:Math.random(), p1, p2, winner:null}); } for(let m of first) { if(m.p1.name==="BYE" && m.p2.name!=="BYE") m.winner='p2'; else if(m.p2.name==="BYE" && m.p1.name!=="BYE") m.winner='p1'; } let rounds=[first], cur=first; while(cur.length>1) { let next=[]; for(let i=0; i<cur.length; i+=2) next.push({id:Math.random(), p1:{name:"???", champion:"—", pending:true}, p2:{name:"???", champion:"—", pending:true}, winner:null, sourceLeft:cur[i], sourceRight:cur[i+1]}); rounds.push(next); cur=next; } updateAllRounds(rounds); return rounds; }
+    function renderBracket() { const container = document.getElementById("bracketTree"); if(!currentRounds.length) { container.innerHTML='<div style="padding:2rem;">Générez un bracket</div>'; return; } const bracketDiv = document.createElement("div"); bracketDiv.className="bracket"; for(let r=0; r<currentRounds.length; r++) { const roundDiv=document.createElement("div"); roundDiv.className="round"; let title=r===0?"🎯 Premier tour":(r===currentRounds.length-1?"🏆 FINALE":`Tour ${r}`); const titleEl=document.createElement("div"); titleEl.className="round-title"; titleEl.innerText=title; roundDiv.appendChild(titleEl); for(let match of currentRounds[r]) { const card=document.createElement("div"); card.className="match-card"; const playersDiv=document.createElement("div"); playersDiv.className="match-players"; const makeSlot = (player, isWin) => { const div=document.createElement("div"); div.className=`player-slot ${isWin?'winner':''}`; const nameSpan=document.createElement("span"); nameSpan.innerText=player.name==="BYE"?"🆓 BYE":(player.pending?"❓ ?":player.name); const champSpan=document.createElement("span"); champSpan.className="player-champ"; if(!player.pending && player.name!=="BYE" && player.champion && player.champion!=="—") { const img=document.createElement("img"); img.src=getChampionIconUrl(player.champion); img.className="champ-icon"; img.style.width="18px"; img.onerror=()=>img.style.display='none'; champSpan.appendChild(img); champSpan.appendChild(document.createTextNode(player.champion)); } else if(player.name!=="BYE") champSpan.innerText="⚔️"; div.appendChild(nameSpan); div.appendChild(champSpan); return div; }; const p1Div=makeSlot(match.p1, match.winner==='p1'); const p2Div=makeSlot(match.p2, match.winner==='p2'); playersDiv.appendChild(p1Div); const vs=document.createElement("div"); vs.className="vs-badge"; vs.innerText="VS"; playersDiv.appendChild(vs); playersDiv.appendChild(p2Div); if(!match.p1.pending && match.p1.name!=="BYE" && match.p1.name!=="???") { p1Div.classList.add("clickable"); p1Div.onclick=e=>setWinner(match,'p1'); p1Div.ondblclick=e=>{ let n=prompt("Nouveau nom:", match.p1.name); if(n&&n.trim()) { match.p1.name=n.trim(); if(currentUseRandom) match.p1.champion=getRandomChampion(); match.winner=null; updateAllRounds(currentRounds); renderBracket(); } }; } if(!match.p2.pending && match.p2.name!=="BYE" && match.p2.name!=="???") { p2Div.classList.add("clickable"); p2Div.onclick=e=>setWinner(match,'p2'); p2Div.ondblclick=e=>{ let n=prompt("Nouveau nom:", match.p2.name); if(n&&n.trim()) { match.p2.name=n.trim(); if(currentUseRandom) match.p2.champion=getRandomChampion(); match.winner=null; updateAllRounds(currentRounds); renderBracket(); } }; } card.appendChild(playersDiv); roundDiv.appendChild(card); } bracketDiv.appendChild(roundDiv); } container.innerHTML=""; container.appendChild(bracketDiv); }
+    function generateBracketFromUI() { let raw=document.getElementById("playerNamesInput").value; currentUseRandom=document.getElementById("randomChampCheckbox").checked; let names=raw.split(",").map(s=>s.trim()).filter(s=>s); if(names.length===0) names=["Faker","Caps","Chovy","Zeus"]; currentRounds=createBracket(names, currentUseRandom); renderBracket(); }
 
-    // ---------- GESTION DE L'HISTORIQUE (localStorage) ----------
-    let tournamentHistory = [];
-
-    function loadHistory() {
-        const saved = localStorage.getItem("lol1v1_history");
-        if (saved) {
-            try {
-                tournamentHistory = JSON.parse(saved);
-            } catch(e) { tournamentHistory = []; }
-        }
-        renderHistory();
-    }
-
-    function saveHistory() {
-        localStorage.setItem("lol1v1_history", JSON.stringify(tournamentHistory));
-        renderHistory();
-    }
-
-    function addWinnerToHistory(winnerName, championName, date) {
-        tournamentHistory.unshift({
-            winner: winnerName,
-            champion: championName,
-            date: date || new Date().toLocaleString()
-        });
-        // Garder seulement les 20 derniers
-        if (tournamentHistory.length > 20) tournamentHistory.pop();
-        saveHistory();
-    }
-
-    function clearHistory() {
-        tournamentHistory = [];
-        saveHistory();
-    }
-
-    function renderHistory() {
-        const container = document.getElementById("historyList");
-        if (!tournamentHistory.length) {
-            container.innerHTML = '<span style="color:#6b7280;">Aucun vainqueur enregistré pour le moment.</span>';
-            return;
-        }
-        container.innerHTML = tournamentHistory.map(entry => `
-            <div class="history-card">
-                <span>🏆 ${escapeHtml(entry.winner)}</span>
-                ${entry.champion && entry.champion !== "—" ? `
-                    <div class="player-champ" style="display:flex; align-items:center; gap:4px;">
-                        <img src="${getChampionIconUrl(entry.champion)}" class="champ-icon" style="width:18px;height:18px;" onerror="this.style.display='none'">
-                        <span>${escapeHtml(entry.champion)}</span>
-                    </div>
-                ` : ''}
-                <span style="font-size:0.7rem; color:#8a8f9e;">📅 ${entry.date}</span>
-            </div>
-        `).join('');
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
-    // ---------- STRUCTURE DU BRACKET ----------
-    let currentRounds = [];
-    let currentUseRandom = false;
-
-    function createBracket(playerNames, useRandomChamps) {
-        const n = playerNames.length;
-        let size = 1;
-        while (size < n) size <<= 1;
-        
-        const firstRoundMatches = [];
-        let playerIdx = 0;
-        
-        for (let i = 0; i < size / 2; i++) {
-            let p1 = null, p2 = null;
-            
-            if (playerIdx < n) {
-                const name = playerNames[playerIdx++];
-                p1 = { name: name, champion: useRandomChamps ? getRandomChampion() : "—", isBye: false, pending: false };
-            } else {
-                p1 = { name: "BYE", champion: "", isBye: true, pending: false };
-            }
-            
-            if (playerIdx < n) {
-                const name = playerNames[playerIdx++];
-                p2 = { name: name, champion: useRandomChamps ? getRandomChampion() : "—", isBye: false, pending: false };
-            } else {
-                p2 = { name: "BYE", champion: "", isBye: true, pending: false };
-            }
-            
-            firstRoundMatches.push({
-                id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(),
-                p1: p1, p2: p2, winner: null
-            });
-        }
-        
-        for (let match of firstRoundMatches) {
-            if (match.p1.isBye && !match.p2.isBye) match.winner = 'p2';
-            else if (match.p2.isBye && !match.p1.isBye) match.winner = 'p1';
-        }
-        
-        const rounds = [firstRoundMatches];
-        let currentMatches = firstRoundMatches;
-        while (currentMatches.length > 1) {
-            const nextRound = [];
-            for (let i = 0; i < currentMatches.length; i += 2) {
-                nextRound.push({
-                    id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(),
-                    p1: { name: "???", champion: "—", isBye: false, pending: true },
-                    p2: { name: "???", champion: "—", isBye: false, pending: true },
-                    winner: null,
-                    sourceLeft: currentMatches[i],
-                    sourceRight: currentMatches[i+1]
-                });
-            }
-            rounds.push(nextRound);
-            currentMatches = nextRound;
-        }
-        
-        updateAllRounds(rounds);
-        return rounds;
-    }
+    // ==================== PARTIE 2 : CREATEUR EQUIPES 5v5 ====================
+    const RANKS = ["Fer IV","Fer III","Fer II","Fer I","Bronze IV","Bronze III","Bronze II","Bronze I","Argent IV","Argent III","Argent II","Argent I","Or IV","Or III","Or II","Or I","Platine IV","Platine III","Platine II","Platine I","Émeraude IV","Émeraude III","Émeraude II","Émeraude I","Diamant IV","Diamant III","Diamant II","Diamant I","Master","Grandmaster","Challenger"];
+    function getRankValue(rank) { const idx=RANKS.indexOf(rank); if(idx===-1) return 0; if(rank.includes("Fer")) return 400+(idx%4)*50; if(rank.includes("Bronze")) return 800+(idx%4)*50; if(rank.includes("Argent")) return 1200+(idx%4)*50; if(rank.includes("Or")) return 1600+(idx%4)*50; if(rank.includes("Platine")) return 2000+(idx%4)*50; if(rank.includes("Émeraude")) return 2400+(idx%4)*50; if(rank.includes("Diamant")) return 2800+(idx%4)*50; if(rank==="Master") return 3200; if(rank==="Grandmaster") return 3400; if(rank==="Challenger") return 3600; return 0; }
+    function getRankClass(rank) { if(!rank) return ""; if(rank.includes("Fer")) return "rank-Fer"; if(rank.includes("Bronze")) return "rank-Bronze"; if(rank.includes("Argent")) return "rank-Argent"; if(rank.includes("Or")) return "rank-Or"; if(rank.includes("Platine")) return "rank-Platine"; if(rank.includes("Émeraude")) return "rank-Émeraude"; if(rank.includes("Diamant")) return "rank-Diamant"; if(rank.includes("Master")) return "rank-Master"; if(rank.includes("Grandmaster")) return "rank-Grandmaster"; if(rank.includes("Challenger")) return "rank-Challenger"; return ""; }
+    const ROLES = ["Top","Jungle","Mid","ADC","Support"];
+    let teamPlayers = [];
+    let teamHistory = [];
     
-    function updateAllRounds(rounds) {
-        if (!rounds.length) return;
-        for (let r = 0; r < rounds.length - 1; r++) {
-            const nextRound = rounds[r + 1];
-            for (let i = 0; i < nextRound.length; i++) {
-                const nextMatch = nextRound[i];
-                if (nextMatch.sourceLeft && nextMatch.sourceRight) {
-                    const leftWinner = getMatchWinner(nextMatch.sourceLeft);
-                    const rightWinner = getMatchWinner(nextMatch.sourceRight);
-                    
-                    const getChampionForPromotion = (oldChamp) => {
-                        if (!currentUseRandom) return "—";
-                        return getRandomChampion();
-                    };
-                    
-                    nextMatch.p1 = leftWinner ? { ...leftWinner, champion: getChampionForPromotion(leftWinner.champion), pending: false } : { name: "???", champion: "—", isBye: false, pending: true };
-                    nextMatch.p2 = rightWinner ? { ...rightWinner, champion: getChampionForPromotion(rightWinner.champion), pending: false } : { name: "???", champion: "—", isBye: false, pending: true };
-                    
-                    if (nextMatch.winner) {
-                        const winnerStillValid = (nextMatch.winner === 'p1' && nextMatch.p1 && !nextMatch.p1.pending) ||
-                                                (nextMatch.winner === 'p2' && nextMatch.p2 && !nextMatch.p2.pending);
-                        if (!winnerStillValid) nextMatch.winner = null;
-                    }
-                }
-            }
-        }
-    }
+    function loadTeamHistory() { const s = localStorage.getItem("lol_team_history_final"); if(s) teamHistory = JSON.parse(s); renderTeamHistory(); }
+    function saveTeamHistory() { localStorage.setItem("lol_team_history_final", JSON.stringify(teamHistory)); renderTeamHistory(); }
+    function addTeamToHistory(blue, red, method) { teamHistory.unshift({ blue: blue.map(p=>p.name), red: red.map(p=>p.name), method, date: new Date().toLocaleString() }); if(teamHistory.length>15) teamHistory.pop(); saveTeamHistory(); }
+    function clearTeamHistory() { teamHistory = []; saveTeamHistory(); }
+    function renderTeamHistory() { const container = document.getElementById("teamHistoryList"); if(!teamHistory.length) { container.innerHTML = '<span>Aucun tirage</span>'; return; } container.innerHTML = teamHistory.map(e => `<div class="history-card">🎲 ${e.method}<br>🔵 ${e.blue.length} - 🔴 ${e.red.length}<br><span style="font-size:0.7rem;">📅 ${e.date}</span></div>`).join(''); }
     
-    function getMatchWinner(match) {
-        if (!match) return null;
-        if (match.winner === 'p1') return match.p1 && !match.p1.pending ? match.p1 : null;
-        if (match.winner === 'p2') return match.p2 && !match.p2.pending ? match.p2 : null;
-        return null;
-    }
-    
-    // Détecter la fin du tournoi et sauvegarder le vainqueur
-    function checkAndSaveTournamentWinner(rounds) {
-        if (!rounds.length) return;
-        const finalRound = rounds[rounds.length - 1];
-        if (finalRound.length === 1 && finalRound[0].winner) {
-            const finalMatch = finalRound[0];
-            const winner = finalMatch.winner === 'p1' ? finalMatch.p1 : finalMatch.p2;
-            if (winner && winner.name !== "BYE" && winner.name !== "???" && !winner.pending) {
-                // Sauvegarder uniquement si ce vainqueur n'est pas déjà le dernier enregistré (évite les doublons en rafale)
-                const lastWinner = tournamentHistory[0];
-                if (!lastWinner || lastWinner.winner !== winner.name || lastWinner.champion !== winner.champion) {
-                    addWinnerToHistory(winner.name, winner.champion !== "—" ? winner.champion : null, new Date().toLocaleString());
-                }
-            }
-        }
-    }
-    
-    function setWinner(match, side) {
-        if (!match) return;
-        if (side === 'p1') {
-            if (!match.p1 || match.p1.pending || match.p1.name === "BYE" || match.p1.name === "???") return;
+    function updatePlayerWarning() {
+        const warning = document.getElementById("playerWarning");
+        if(teamPlayers.length > 10) {
+            warning.innerHTML = "⚠️ Attention : vous avez plus de 10 joueurs. Seuls les 10 premiers seront utilisés pour créer les équipes 5v5.";
+        } else if(teamPlayers.length !== 10 && teamPlayers.length > 0) {
+            warning.innerHTML = `ℹ️ Vous avez ${teamPlayers.length} joueur(s). Pour un 5v5 parfait, il faut 10 joueurs. Les joueurs restants seront répartis équitablement.`;
         } else {
-            if (!match.p2 || match.p2.pending || match.p2.name === "BYE" || match.p2.name === "???") return;
+            warning.innerHTML = "";
         }
-        match.winner = side;
-        updateAllRounds(currentRounds);
-        renderBracket();
-        checkAndSaveTournamentWinner(currentRounds);
     }
     
-    function editPlayerName(match, side, newName) {
-        if (side === 'p1') {
-            if (match.p1.pending || match.p1.name === "BYE") return;
-            match.p1.name = newName.trim() || "Joueur";
-            if (currentUseRandom) match.p1.champion = getRandomChampion();
-        } else {
-            if (match.p2.pending || match.p2.name === "BYE") return;
-            match.p2.name = newName.trim() || "Joueur";
-            if (currentUseRandom) match.p2.champion = getRandomChampion();
-        }
-        match.winner = null;
-        updateAllRounds(currentRounds);
-        renderBracket();
+    function renderPlayersEditor() { 
+        const container = document.getElementById("playersListContainer");
+        if(!container) return;
+        container.innerHTML = teamPlayers.map((p, idx) => `<div class="player-card"><input type="text" value="${escapeHtml(p.name)}" class="player-name-input" data-idx="${idx}" style="flex:2;"><select class="player-rank-select" data-idx="${idx}"><option value="">-- Pas de rang --</option>${RANKS.map(r => `<option value="${r}" ${p.rank===r?'selected':''}>${r}</option>`).join('')}</select><select class="player-role-select" data-idx="${idx}"><option value="">-- Pas de rôle --</option>${ROLES.map(r => `<option value="${r}" ${p.role===r?'selected':''}>${r}</option>`).join('')}</select><button class="remove-player" data-idx="${idx}">❌</button></div>`).join('');
+        document.querySelectorAll('.player-name-input').forEach(inp => inp.addEventListener('change', (e) => { const idx=parseInt(e.target.dataset.idx); if(!isNaN(idx)) teamPlayers[idx].name = e.target.value; updatePlayerWarning(); }));
+        document.querySelectorAll('.player-rank-select').forEach(sel => sel.addEventListener('change', (e) => { const idx=parseInt(e.target.dataset.idx); if(!isNaN(idx)) teamPlayers[idx].rank = e.target.value; }));
+        document.querySelectorAll('.player-role-select').forEach(sel => sel.addEventListener('change', (e) => { const idx=parseInt(e.target.dataset.idx); if(!isNaN(idx)) teamPlayers[idx].role = e.target.value; }));
+        document.querySelectorAll('.remove-player').forEach(btn => btn.addEventListener('click', (e) => { const idx=parseInt(btn.dataset.idx); if(!isNaN(idx)) { teamPlayers.splice(idx,1); renderPlayersEditor(); updatePlayerWarning(); } }));
+        updatePlayerWarning();
     }
     
-    // Rendu avec icônes
-    function renderBracket() {
-        const container = document.getElementById("bracketTree");
-        if (!currentRounds.length) {
-            container.innerHTML = '<div style="text-align:center; padding:2rem;">Générez un bracket pour commencer</div>';
-            return;
+    function addPlayer() { if(teamPlayers.length < 20) { teamPlayers.push({ name: `Joueur ${teamPlayers.length+1}`, rank: "Or IV", role: "" }); renderPlayersEditor(); } else { alert("Maximum 20 joueurs atteint"); } }
+    function resetPlayers() { teamPlayers = []; renderPlayersEditor(); renderTeams([],[]); updatePlayerWarning(); }
+    
+    function balanceTeamsByRankAndRole(players, useRank, useRole) {
+        if (!players.length) return { blue: [], red: [] };
+        // Limiter à 10 joueurs max pour 5v5
+        let limitedPlayers = players.slice(0, 10);
+        let playerCopy = limitedPlayers.map(p => ({ ...p, elo: useRank ? getRankValue(p.rank) : 0 }));
+        
+        if (!useRank && !useRole) {
+            let shuffled = [...playerCopy];
+            for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+            let blue=[], red=[];
+            for(let i=0;i<shuffled.length;i++) { if(i%2===0) blue.push(shuffled[i]); else red.push(shuffled[i]); }
+            return { blue, red };
         }
-        
-        const bracketDiv = document.createElement("div");
-        bracketDiv.className = "bracket";
-        
-        for (let r = 0; r < currentRounds.length; r++) {
-            const round = currentRounds[r];
-            const roundDiv = document.createElement("div");
-            roundDiv.className = "round";
-            
-            let roundTitle = "";
-            if (r === 0) roundTitle = "🎯 Premier tour";
-            else if (r === currentRounds.length - 1) roundTitle = "🏆 FINALE";
-            else roundTitle = `Tour ${r}`;
-            
-            const titleEl = document.createElement("div");
-            titleEl.className = "round-title";
-            titleEl.innerText = roundTitle;
-            roundDiv.appendChild(titleEl);
-            
-            for (let m = 0; m < round.length; m++) {
-                const match = round[m];
-                const card = document.createElement("div");
-                card.className = "match-card";
-                const playersDiv = document.createElement("div");
-                playersDiv.className = "match-players";
-                
-                const createPlayerDiv = (player, isWinner, side) => {
-                    const div = document.createElement("div");
-                    div.className = `player-slot ${isWinner ? 'winner' : ''}`;
-                    const nameSpan = document.createElement("span");
-                    nameSpan.className = "player-name";
-                    let displayName = player.name;
-                    if (player.name === "BYE") displayName = "🆓 BYE";
-                    else if (player.pending || player.name === "???") displayName = "❓ En attente";
-                    nameSpan.innerText = displayName;
-                    
-                    const champSpan = document.createElement("span");
-                    champSpan.className = "player-champ";
-                    if (!player.pending && player.name !== "BYE" && player.name !== "???" && player.champion && player.champion !== "—") {
-                        const iconUrl = getChampionIconUrl(player.champion);
-                        if (iconUrl) {
-                            const img = document.createElement("img");
-                            img.src = iconUrl;
-                            img.className = "champ-icon";
-                            img.onerror = () => img.style.display = 'none';
-                            champSpan.appendChild(img);
-                        }
-                        champSpan.appendChild(document.createTextNode(player.champion));
-                    } else if (player.name === "BYE") {
-                        // rien
-                    } else {
-                        champSpan.innerText = "⚔️";
-                    }
-                    div.appendChild(nameSpan);
-                    div.appendChild(champSpan);
-                    return div;
-                };
-                
-                const p1Div = createPlayerDiv(match.p1, match.winner === 'p1', 'p1');
-                const p2Div = createPlayerDiv(match.p2, match.winner === 'p2', 'p2');
-                
-                playersDiv.appendChild(p1Div);
-                const vs = document.createElement("div");
-                vs.className = "vs-badge";
-                vs.innerText = "VS";
-                playersDiv.appendChild(vs);
-                playersDiv.appendChild(p2Div);
-                
-                const isP1Clickable = !match.p1.pending && match.p1.name !== "BYE" && match.p1.name !== "???";
-                const isP2Clickable = !match.p2.pending && match.p2.name !== "BYE" && match.p2.name !== "???";
-                
-                if (isP1Clickable) {
-                    p1Div.classList.add("clickable");
-                    p1Div.onclick = (e) => { e.stopPropagation(); setWinner(match, 'p1'); };
+        if (useRole && useRank) {
+            let byRole = { Top:[], Jungle:[], Mid:[], ADC:[], Support:[], "":[] };
+            for (let p of playerCopy) { byRole[p.role] = byRole[p.role] || []; byRole[p.role].push(p); }
+            let blue = [], red = [], sumBlue = 0, sumRed = 0;
+            for (let role of ROLES) {
+                let rolePlayers = byRole[role] || [];
+                rolePlayers.sort((a,b) => b.elo - a.elo);
+                for (let p of rolePlayers) {
+                    if (sumBlue <= sumRed) { blue.push(p); sumBlue += p.elo; }
+                    else { red.push(p); sumRed += p.elo; }
                 }
-                if (isP2Clickable) {
-                    p2Div.classList.add("clickable");
-                    p2Div.onclick = (e) => { e.stopPropagation(); setWinner(match, 'p2'); };
-                }
-                if (isP1Clickable) {
-                    p1Div.ondblclick = (e) => {
-                        e.stopPropagation();
-                        const newName = prompt("Nouveau nom (gauche):", match.p1.name);
-                        if (newName && newName.trim()) editPlayerName(match, 'p1', newName);
-                    };
-                }
-                if (isP2Clickable) {
-                    p2Div.ondblclick = (e) => {
-                        e.stopPropagation();
-                        const newName = prompt("Nouveau nom (droite):", match.p2.name);
-                        if (newName && newName.trim()) editPlayerName(match, 'p2', newName);
-                    };
-                }
-                
-                card.appendChild(playersDiv);
-                roundDiv.appendChild(card);
             }
-            bracketDiv.appendChild(roundDiv);
+            let others = byRole[""] || [];
+            others.sort((a,b) => b.elo - a.elo);
+            for (let p of others) {
+                if (sumBlue <= sumRed) { blue.push(p); sumBlue += p.elo; }
+                else { red.push(p); sumRed += p.elo; }
+            }
+            return { blue, red };
+        } else if (useRank && !useRole) {
+            playerCopy.sort((a,b) => b.elo - a.elo);
+            let blue = [], red = [], sumBlue = 0, sumRed = 0;
+            for (let p of playerCopy) {
+                if (sumBlue <= sumRed) { blue.push(p); sumBlue += p.elo; }
+                else { red.push(p); sumRed += p.elo; }
+            }
+            return { blue, red };
+        } else if (!useRank && useRole) {
+            let byRole = { Top:[], Jungle:[], Mid:[], ADC:[], Support:[], "":[] };
+            for (let p of playerCopy) { byRole[p.role] = byRole[p.role] || []; byRole[p.role].push(p); }
+            let blue = [], red = [];
+            for (let role of ROLES) {
+                let rolePlayers = byRole[role] || [];
+                for(let i=0;i<rolePlayers.length;i++) {
+                    if(i%2===0) blue.push(rolePlayers[i]);
+                    else red.push(rolePlayers[i]);
+                }
+            }
+            let others = byRole[""] || [];
+            for(let i=0;i<others.length;i++) {
+                if(i%2===0) blue.push(others[i]);
+                else red.push(others[i]);
+            }
+            return { blue, red };
         }
-        container.innerHTML = "";
-        container.appendChild(bracketDiv);
+        return { blue: [], red: [] };
     }
     
-    function extractPlayerNamesFromBracket(rounds) {
-        if (!rounds.length) return [];
-        const names = [];
-        for (const match of rounds[0]) {
-            if (match.p1 && !match.p1.pending && match.p1.name !== "BYE" && match.p1.name !== "???") names.push(match.p1.name);
-            if (match.p2 && !match.p2.pending && match.p2.name !== "BYE" && match.p2.name !== "???") names.push(match.p2.name);
+    function renderTeams(blue, red) {
+        const blueUl = document.getElementById("blueTeamList");
+        const redUl = document.getElementById("redTeamList");
+        if(!blue.length && !red.length) { blueUl.innerHTML='<li>Aucun joueur</li>'; redUl.innerHTML='<li>Aucun joueur</li>'; return; }
+        blueUl.innerHTML = blue.map(p => `<li><span>${escapeHtml(p.name)}</span><span class="rank-color ${getRankClass(p.rank)}">${p.rank || '?'}</span>${p.role ? `<span class="role-badge" style="margin-left:6px;">${p.role}</span>` : ''}</li>`).join('');
+        redUl.innerHTML = red.map(p => `<li><span>${escapeHtml(p.name)}</span><span class="rank-color ${getRankClass(p.rank)}">${p.rank || '?'}</span>${p.role ? `<span class="role-badge" style="margin-left:6px;">${p.role}</span>` : ''}</li>`).join('');
+        if(blue.length !== red.length) {
+            const diff = Math.abs(blue.length - red.length);
+            const msg = document.getElementById("teamsContainer");
+            const existingMsg = document.getElementById("teamSizeWarning");
+            if(existingMsg) existingMsg.remove();
+            const warning = document.createElement("div");
+            warning.id = "teamSizeWarning";
+            warning.style.textAlign = "center";
+            warning.style.marginTop = "1rem";
+            warning.style.padding = "0.5rem";
+            warning.style.background = "#2d1f2a";
+            warning.style.borderRadius = "30px";
+            warning.style.color = "#FFD966";
+            warning.innerHTML = `⚠️ Nombre de joueurs déséquilibré : ${blue.length} vs ${red.length} (${diff} joueur(s) de différence)`;
+            msg.parentNode.insertBefore(warning, msg.nextSibling);
+            setTimeout(() => { if(warning) warning.remove(); }, 4000);
         }
-        return names;
     }
     
-    function generateFromUI() {
-        let count = parseInt(document.getElementById("playerCount").value, 10);
-        let rawNames = document.getElementById("playerNamesInput").value;
-        currentUseRandom = document.getElementById("randomChampCheckbox").checked;
-        let namesList = [];
-        if (rawNames.trim() !== "") {
-            let byComma = rawNames.split(",").map(s => s.trim()).filter(s => s);
-            if (byComma.length > 1) namesList = byComma;
-            else namesList = rawNames.split(/\r?\n/).map(s => s.trim()).filter(s => s);
-        }
-        if (namesList.length === 0) for (let i=1; i<=count; i++) namesList.push(`Joueur ${i}`);
-        else if (namesList.length !== count) {
-            if (namesList.length > count) namesList = namesList.slice(0, count);
-            else for (let i=namesList.length+1; i<=count; i++) namesList.push(`Joueur ${i}`);
-        }
-        document.getElementById("playerNamesInput").value = namesList.join(", ");
-        currentRounds = createBracket(namesList, currentUseRandom);
-        renderBracket();
+    function generateBalancedTeams() {
+        if(teamPlayers.length === 0) { alert("Ajoutez au moins un joueur !"); return; }
+        const useRank = document.getElementById("useRanksCheckbox").checked;
+        const useRole = document.getElementById("useRolesCheckbox").checked;
+        let { blue, red } = balanceTeamsByRankAndRole(teamPlayers, useRank, useRole);
+        renderTeams(blue, red);
+        let method = "";
+        if(useRank && useRole) method = "Équilibré (Rangs + Rôles)";
+        else if(useRank && !useRole) method = "Équilibré par Rangs (ELO)";
+        else if(!useRank && useRole) method = "Répartition par Rôles";
+        else method = "Aléatoire pur";
+        addTeamToHistory(blue, red, method);
     }
     
-    function regenerateWithSameNames() {
-        if (!currentRounds.length) { generateFromUI(); return; }
-        const names = extractPlayerNamesFromBracket(currentRounds);
-        if (!names.length) { generateFromUI(); return; }
-        currentUseRandom = document.getElementById("randomChampCheckbox").checked;
-        currentRounds = createBracket(names, currentUseRandom);
-        renderBracket();
+    function generateRandomTeams() {
+        if(teamPlayers.length === 0) { alert("Ajoutez au moins un joueur !"); return; }
+        let limited = teamPlayers.slice(0, 10);
+        let shuffled = [...limited];
+        for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+        let blue=[], red=[];
+        for(let i=0;i<shuffled.length;i++) { if(i%2===0) blue.push(shuffled[i]); else red.push(shuffled[i]); }
+        renderTeams(blue, red);
+        addTeamToHistory(blue, red, "Aléatoire pur");
     }
     
-    document.getElementById("generateBtn").addEventListener("click", generateFromUI);
-    document.getElementById("randomChampCheckbox").addEventListener("change", regenerateWithSameNames);
-    document.getElementById("clearHistoryBtn").addEventListener("click", () => clearHistory());
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+    // Événements
+    document.getElementById("generateBtn")?.addEventListener("click", generateBracketFromUI);
+    document.getElementById("randomChampCheckbox")?.addEventListener("change", () => { if(currentRounds.length) generateBracketFromUI(); });
+    document.getElementById("clearHistoryBtn")?.addEventListener("click", clearBracketHistory);
+    document.getElementById("addPlayerBtn")?.addEventListener("click", addPlayer);
+    document.getElementById("resetPlayersBtn")?.addEventListener("click", resetPlayers);
+    document.getElementById("randomizeTeamsRankBtn")?.addEventListener("click", generateBalancedTeams);
+    document.getElementById("shuffleTeamsBtn")?.addEventListener("click", generateRandomTeams);
+    document.getElementById("clearTeamHistoryBtn")?.addEventListener("click", clearTeamHistory);
     
-    loadHistory();
-    (function init() {
-        document.getElementById("playerNamesInput").value = "Faker, Caps, Chovy, Zeus, Gumayusi, BeryL, Oner, Keria";
-        document.getElementById("playerCount").value = "8";
-        generateFromUI();
-    })();
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => { 
+        document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active')); 
+        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); 
+        btn.classList.add('active'); 
+        document.getElementById(btn.dataset.tab+"Tab").classList.add('active'); 
+    }));
+
+    // Initialisation
+    loadBracketHistory(); 
+    loadTeamHistory();
+    teamPlayers = [
+        { name:"Faker", rank:"Challenger", role:"Mid" },
+        { name:"Caps", rank:"Grandmaster", role:"Mid" },
+        { name:"Bin", rank:"Master", role:"Top" },
+        { name:"Jankos", rank:"Diamant I", role:"Jungle" },
+        { name:"Rekkles", rank:"Émeraude I", role:"ADC" },
+        { name:"Mikyx", rank:"Diamant III", role:"Support" },
+        { name:"Yike", rank:"Master", role:"Jungle" },
+        { name:"Hans Sama", rank:"Diamant II", role:"ADC" },
+        { name:"BrokenBlade", rank:"Grandmaster", role:"Top" },
+        { name:"Humanoid", rank:"Master", role:"Mid" }
+    ];
+    renderPlayersEditor();
+    generateBracketFromUI();
 </script>
 </body>
 </html>
